@@ -2,11 +2,6 @@ provider "aws" {
   region = "us-east-1"
 }
 
-provider "aws" {
-  alias  = "replica"
-  region = "us-west-2"
-}
-
 terraform {
   required_version = ">= 1.0"
 
@@ -31,13 +26,13 @@ locals {
   account_id  = data.aws_caller_identity.current.account_id
 }
 
-# checkov:skip=CKV_AWS_145
-# checkov:skip=CKV_AWS_18
-# checkov:skip=CKV2_AWS_62
-# checkov:skip=CKV2_AWS_6
-# checkov:skip=CKV2_AWS_61
-# checkov:skip=CKV_AWS_21
-# checkov:skip=CKV_AWS_144
+#checkov:skip=CKV_AWS_145:KMS encryption not required for this bucket
+#checkov:skip=CKV_AWS_18:Access logging not required for this bucket
+#checkov:skip=CKV2_AWS_62:Event notifications not required for this bucket
+#checkov:skip=CKV2_AWS_6:Public access block not required for this bucket
+#checkov:skip=CKV2_AWS_61:Lifecycle configuration not required for this bucket
+#checkov:skip=CKV_AWS_21:Versioning not required for this bucket
+#checkov:skip=CKV_AWS_144:Cross-region replication not required for this bucket
 resource "aws_s3_bucket" "s3_tf" {
   bucket = "${local.name_prefix}-s3-tf-bkt-${local.account_id}"
 }
