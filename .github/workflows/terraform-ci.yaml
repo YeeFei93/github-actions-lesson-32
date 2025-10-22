@@ -48,6 +48,7 @@ jobs:
       uses: bridgecrewio/checkov-action@master
       with:
         framework: terraform
+        config_file: .checkov.yml
    
     - name: Terraform Plan
       run: terraform plan

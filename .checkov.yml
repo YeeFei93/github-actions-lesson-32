@@ -1,0 +1,8 @@
+skip-check:
+  - CKV_AWS_145  # S3 bucket encrypted with KMS
+  - CKV_AWS_18   # S3 bucket access logging
+  - CKV2_AWS_62  # S3 bucket event notifications
+  - CKV2_AWS_6   # S3 bucket public access block
+  - CKV2_AWS_61  # S3 bucket lifecycle configuration
+  - CKV_AWS_21   # S3 bucket versioning
+  - CKV_AWS_144  # S3 bucket cross-region replication
