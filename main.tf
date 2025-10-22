@@ -29,3 +29,47 @@ locals {
 resource "aws_s3_bucket" "s3_tf" {
   bucket = "${local.name_prefix}-s3-tf-bkt-${local.account_id}"
 }
+
+# Enable versioning
+resource "aws_s3_bucket_versioning" "s3_tf_versioning" {
+  bucket = aws_s3_bucket.s3_tf.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+# Enable server-side encryption with AES256 (simpler than KMS)
+resource "aws_s3_bucket_server_side_encryption_configuration" "s3_tf_encryption" {
+  bucket = aws_s3_bucket.s3_tf.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+# Block public access
+resource "aws_s3_bucket_public_access_block" "s3_tf_public_access_block" {
+  bucket                  = aws_s3_bucket.s3_tf.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# Minimal lifecycle configuration
+resource "aws_s3_bucket_lifecycle_configuration" "s3_tf_lifecycle" {
+  bucket = aws_s3_bucket.s3_tf.id
+  rule {
+    id     = "rule-1"
+    status = "Enabled"
+    filter {}
+  }
+}
+
+# Enable access logging to self
+resource "aws_s3_bucket_logging" "s3_tf_logging" {
+  bucket        = aws_s3_bucket.s3_tf.id
+  target_bucket = aws_s3_bucket.s3_tf.id
+  target_prefix = "logs/"
+}
